@@ -1,5 +1,8 @@
 # from dotenv import load_dotenv
 # load_dotenv()
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import os
 import tempfile
@@ -22,15 +25,14 @@ st.write("---")
 def pdf_to_document(uploaded_file):
     # Read documents
     temp_dir = tempfile.TemporaryDirectory()
-    for file in uploaded_file:
-        temp_filepath = os.path.join(temp_dir.name, file.name)
-        with open(temp_filepath, "wb") as f:
-            f.write(file.getvalue())
-        loader = PyPDFLoader(temp_filepath)
-        pages = loader.load_and_split()
-        return pages
+    temp_filepath = os.path.join(temp_dir.name, uploaded_file.name)
+    with open(temp_filepath, "wb") as f:
+        f.write(uploaded_file.getvalue())
+    loader = PyPDFLoader(temp_filepath)
+    pages = loader.load_and_split()
+    return pages
     
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a file", type=['pdf'])
 if uploaded_file is not None:
     pages = pdf_to_document(uploaded_file)
     text_splitter = RecursiveCharacterTextSplitter(
@@ -66,3 +68,4 @@ if uploaded_file is not None:
 #          merger.append(filename)
 # merger.write("output.pdf")
 # merger.close()
+

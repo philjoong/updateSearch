@@ -26,7 +26,7 @@ text_splitter = RecursiveCharacterTextSplitter(
     )
 texts = text_splitter.split_documents(pages)
 embeddings_model = OpenAIEmbeddings()
-db = Chroma.from_documents(texts, embeddings_model, persist_directory="/chroma")
+db = Chroma.from_documents(texts, embeddings_model)
 
 st.title("리니지2M 23년 9월 업데이트 검색")
 st.write("---")

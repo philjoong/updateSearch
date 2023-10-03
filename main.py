@@ -19,7 +19,7 @@ loader = PyPDFLoader("output.pdf")
 pages = loader.load_and_split()
 
 text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 800,
+        chunk_size = 300,
         chunk_overlap  = 20,
         length_function = len,
         is_separator_regex = False,
